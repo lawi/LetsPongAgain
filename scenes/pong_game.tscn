@@ -1,0 +1,189 @@
+[gd_scene load_steps=11 format=3 uid="uid://b50cmubiofyss"]
+
+[ext_resource type="Script" path="res://scripts/pong_game.gd" id="1_d7uwm"]
+[ext_resource type="PackedScene" uid="uid://cx78ujlanwrbt" path="res://scenes/paddle.tscn" id="2_non0x"]
+[ext_resource type="Script" path="res://scripts/Ball.gd" id="4_8xuw6"]
+[ext_resource type="FontFile" uid="uid://ba86x34hwpgc3" path="res://fonts/BungeeLayers-Regular.otf" id="5_l6t2v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hd0nn"]
+size = Vector2(1200, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmmj3"]
+size = Vector2(1200, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcsb"]
+size = Vector2(106.5, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ntpc6"]
+
+[sub_resource type="Theme" id="Theme_ercju"]
+default_font = ExtResource("5_l6t2v")
+default_font_size = 70
+
+[sub_resource type="Theme" id="Theme_hbt80"]
+default_font = ExtResource("5_l6t2v")
+default_font_size = 30
+
+[node name="PongGame" type="Node2D"]
+script = ExtResource("1_d7uwm")
+
+[node name="GameArea" type="Node2D" parent="."]
+
+[node name="CenterLine" type="ColorRect" parent="GameArea"]
+modulate = Color(0.458824, 0.458824, 0.458824, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 630.0
+offset_top = 20.0
+offset_right = 650.0
+offset_bottom = 700.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Borders" type="StaticBody2D" parent="GameArea"]
+collision_layer = 2
+
+[node name="TopRect" type="ColorRect" parent="GameArea/Borders"]
+offset_left = 40.0
+offset_top = 20.0
+offset_right = 1240.0
+offset_bottom = 40.0
+
+[node name="TopCollisionShape" type="CollisionShape2D" parent="GameArea/Borders"]
+position = Vector2(640, 20)
+shape = SubResource("RectangleShape2D_hd0nn")
+
+[node name="BottomRect" type="ColorRect" parent="GameArea/Borders"]
+offset_left = 40.0
+offset_top = 680.0
+offset_right = 1240.0
+offset_bottom = 700.0
+
+[node name="BottomCollisionShape" type="CollisionShape2D" parent="GameArea/Borders"]
+position = Vector2(640, 700)
+shape = SubResource("RectangleShape2D_hmmj3")
+
+[node name="PaddleLeft" parent="GameArea" instance=ExtResource("2_non0x")]
+x_position = 50
+control_up = "ui_left_up"
+control_down = "ui_left_down"
+
+[node name="PaddleRight" parent="GameArea" instance=ExtResource("2_non0x")]
+x_position = 1200
+control_up = "ui_right_up"
+control_down = "ui_right_down"
+
+[node name="BallOffLeft" type="Area2D" parent="GameArea"]
+position = Vector2(-12, 360)
+collision_layer = 2
+
+[node name="LeftCollisionShape" type="CollisionShape2D" parent="GameArea/BallOffLeft"]
+position = Vector2(-1.25, 0)
+shape = SubResource("RectangleShape2D_7dcsb")
+
+[node name="BallOffRight" type="Area2D" parent="GameArea"]
+position = Vector2(1290, 360)
+collision_layer = 2
+
+[node name="RightCollisionShape" type="CollisionShape2D" parent="GameArea/BallOffRight"]
+position = Vector2(4.5, 0)
+shape = SubResource("RectangleShape2D_7dcsb")
+
+[node name="Ball" type="CharacterBody2D" parent="GameArea"]
+position = Vector2(640, 360)
+collision_mask = 3
+script = ExtResource("4_8xuw6")
+
+[node name="BallRect" type="ColorRect" parent="GameArea/Ball"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BallCollider" type="CollisionShape2D" parent="GameArea/Ball"]
+shape = SubResource("RectangleShape2D_ntpc6")
+
+[node name="BallTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Hud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScoreLeft" type="Label" parent="Hud"]
+layout_mode = 0
+offset_left = 540.0
+offset_top = 60.0
+offset_right = 580.0
+offset_bottom = 110.0
+tooltip_text = "0"
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_l6t2v")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreRight" type="Label" parent="Hud"]
+layout_mode = 0
+offset_left = 700.0
+offset_top = 60.0
+offset_right = 740.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_l6t2v")
+theme_override_font_sizes/font_size = 50
+text = "0
+"
+
+[node name="WinnerText" type="Label" parent="Hud"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 15.975
+anchor_top = 5.687
+anchor_right = 16.0
+anchor_bottom = 5.687
+offset_left = -19.0
+offset_top = 92.52
+offset_right = 20.0
+offset_bottom = 115.52
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ercju")
+text = "One Wins"
+
+[node name="NewGameText" type="Label" parent="Hud"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 16.0
+anchor_top = 10.575
+anchor_right = 16.0
+anchor_bottom = 10.575
+offset_left = -34.0
+offset_top = -10.0
+offset_right = 38.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_hbt80")
+text = "Press space for new game"
+
+[connection signal="body_entered" from="GameArea/BallOffLeft" to="." method="_on_ball_off_left_body_entered"]
+[connection signal="body_entered" from="GameArea/BallOffRight" to="." method="_on_ball_off_right_body_entered"]
+[connection signal="timeout" from="BallTimer" to="GameArea/Ball" method="_on_ball_timer_timeout"]
