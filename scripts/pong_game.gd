@@ -3,12 +3,7 @@ extends Node2D
 var score := [0,0]
 var PADDLE_SPEED : int = 500
 var game_ended = false
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_pressed("start_over") and game_ended:
 		new_game()
@@ -25,7 +20,7 @@ func new_game():
 	game_ended = false
 	
 func _on_ball_off_left_body_entered(body):
-	print("Left entered")
+	$BallOffSound.play()
 	score[1] += 1
 	$Hud/ScoreRight.text = str(score[1])
 	if score[1] >= 10:
@@ -33,9 +28,8 @@ func _on_ball_off_left_body_entered(body):
 		return
 	$BallTimer.start()
 
-
 func _on_ball_off_right_body_entered(body):
-	print("Right entered")
+	$BallOffSound.play()
 	score[0] += 1
 	$Hud/ScoreLeft.text = str(score[0])
 	if score[0] >= 10:
@@ -44,6 +38,7 @@ func _on_ball_off_right_body_entered(body):
 	$BallTimer.start()
 
 func game_finished(message : String):
+	$GameEndSound.play()
 	game_ended = true
 	$GameArea.visible = false
 	$Hud/WinnerText.text = message

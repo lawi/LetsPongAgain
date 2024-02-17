@@ -1,9 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://b50cmubiofyss"]
+[gd_scene load_steps=14 format=3 uid="uid://b50cmubiofyss"]
 
 [ext_resource type="Script" path="res://scripts/pong_game.gd" id="1_d7uwm"]
 [ext_resource type="PackedScene" uid="uid://cx78ujlanwrbt" path="res://scenes/paddle.tscn" id="2_non0x"]
 [ext_resource type="Script" path="res://scripts/Ball.gd" id="4_8xuw6"]
 [ext_resource type="FontFile" uid="uid://ba86x34hwpgc3" path="res://fonts/BungeeLayers-Regular.otf" id="5_l6t2v"]
+[ext_resource type="AudioStream" uid="uid://c672ecllflg2k" path="res://sounds/tennis-ball-hit.mp3" id="5_tm1w4"]
+[ext_resource type="AudioStream" uid="uid://dso0hrvmv1d76" path="res://sounds/down_sound.mp3" id="6_aswpi"]
+[ext_resource type="AudioStream" uid="uid://dbgevce7s28wi" path="res://sounds/success.mp3" id="7_a64ef"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hd0nn"]
 size = Vector2(1200, 40)
@@ -183,6 +186,15 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_hbt80")
 text = "Press space for new game"
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_tm1w4")
+
+[node name="BallOffSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_aswpi")
+
+[node name="GameEndSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_a64ef")
 
 [connection signal="body_entered" from="GameArea/BallOffLeft" to="." method="_on_ball_off_left_body_entered"]
 [connection signal="body_entered" from="GameArea/BallOffRight" to="." method="_on_ball_off_right_body_entered"]
